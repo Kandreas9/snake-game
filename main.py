@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-snake = Snake(screen);
+snake = Snake(screen)
 apple = None
 
 BLACK = (0, 0, 0)

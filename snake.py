@@ -1,14 +1,14 @@
 import pygame
 
 class Snake:
-    speed = 1;
-    width = 20;
-    height = 20;
+    speed = 1
+    width = 20
+    height = 20
     direction = 'right'
     frames = 10
 
     # x and y of each snake part
-    parts = [[], [], []];
+    parts = [[], [], []]
 
     def __init__(self, screen):
         for i in range(3):

@@ -6,6 +6,7 @@ class Snake:
     height = 20
     direction = 'right'
     frames = 10
+    test = None
 
     # x and y of each snake part
     parts = [[], [], []]

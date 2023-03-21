@@ -37,7 +37,7 @@ def generateApple():
         if part[0] == xCoord and part[1] == yCoord:
             return generateApple()
 
-    return Apple(random.randrange(xTiles) * 20, random.randrange(yTiles) * 20, snake)
+    return Apple(xCoord, yCoord, snake)
 
 def draw_start_menu():
     font = pygame.font.SysFont('arial', 20)

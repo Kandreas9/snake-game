@@ -81,7 +81,8 @@ while running:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_r]:
             game_state = "start_menu"
-            snake = Snake(screen)
+            snake.reset(screen)
+            apple = None
         if keys[pygame.K_q]:
             pygame.quit()
             quit()

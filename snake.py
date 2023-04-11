@@ -11,10 +11,7 @@ class Snake:
     parts = [[], [], []]
 
     def __init__(self, screen):
-        for i in range(3):
-            self.parts[i] = [self.width * (i + 1), 20]
-        print(self.parts)
-
+        self.reset(screen)
 
     def draw(self, screen, moving):
         self.frames -= 1
@@ -81,3 +78,17 @@ class Snake:
         lastPartPosition = self.parts[0]
 
         self.parts.insert(0, [lastPartPosition[0], lastPartPosition[1]])
+
+    def reset(self, screen):
+        self.speed = 1
+        self.width = 20
+        self.height = 20
+        self.direction = 'right'
+        self.frames = 10
+
+        # x and y of each snake part
+        self.parts = [[], [], []]
+        for i in range(3):
+            self.parts[i] = [self.width * (i + 1), 20]
+
+

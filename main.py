@@ -5,7 +5,7 @@ from snake import Snake
 from apple import Apple
 from trap import Trap
 
-# pygame setup
+#===Pygame Setup===
 pygame.init()
 screen_width = 300
 screen_height = 300
@@ -15,13 +15,18 @@ running = True
 dt = 0
 frame_count = 0
 frame_rate = 60
+font = pygame.font.SysFont('arial', 20)
 
+#===Initialise Classes===
 snake = Snake(screen)
 apples = []
 traps = []
 
 BLACK = (0, 0, 0)
 
+#===Helper Functions===
+
+#===Draws the grid in the background===
 def drawGrid():
     GRAY = (105, 105, 105)
     
@@ -31,6 +36,7 @@ def drawGrid():
             rect = pygame.Rect(x, y, blockSize, blockSize)
             pygame.draw.rect(screen, GRAY, rect, 1)
 
+#===Generate apple only if the spot is empty===
 def generateApple():
     xTiles = int(screen_width / 20)
     yTiles = int(screen_height / 20)
@@ -43,6 +49,7 @@ def generateApple():
 
     return Apple(xCoord, yCoord, snake)
 
+#===Generate trap only if the spot is empty===
 def generateTrap():
     xTiles = int(screen_width / 20)
     yTiles = int(screen_height / 20)
@@ -55,16 +62,15 @@ def generateTrap():
 
     return Trap(xCoord, yCoord, snake)
 
-
+#===Draw text on screen for menu===
 def draw_start_menu():
-    font = pygame.font.SysFont('arial', 20)
     title = font.render('Snake Game', True, (255, 255, 255), BLACK)
     start_button = font.render('Enter - Start', True, (255, 255, 255), BLACK)
     screen.blit(title, ((screen_width/4) * 3 - title.get_width()/2, screen_height/2 - title.get_height()/2))
     screen.blit(start_button, ((screen_width/4) * 3 - start_button.get_width()/2, screen_height/2 + start_button.get_height()/2))
 
+#===Draw text on screen for game over screen===
 def draw_game_over_screen():
-    font = pygame.font.SysFont('arial', 20)
     title = font.render('Game Over', True, (255, 255, 255), BLACK)
     restart_button = font.render('R - Restart', True, (255, 255, 255), BLACK)
     quit_button = font.render('Q - Quit', True, (255, 255, 255), BLACK)
@@ -72,6 +78,7 @@ def draw_game_over_screen():
     screen.blit(restart_button, ((screen_width/4) * 3 - restart_button.get_width()/2, screen_height/1.9 + restart_button.get_height()))
     screen.blit(quit_button, ((screen_width/4) * 3 - quit_button.get_width()/2, screen_height/2 + quit_button.get_height()/2))
 
+#===Draw Timer===
 def draw_timer():
     global frame_count
     global frame_rate
@@ -89,17 +96,17 @@ def draw_timer():
     output_string = "Time: {0:02}:{1:02}".format(minutes, seconds)
 
     # Blit to the screen
-    font = pygame.font.SysFont('arial', 20)
     text = font.render(output_string, True, (255, 255, 255))
     screen.blit(text, [20, 20])
 
     frame_count += 1
 
+#===Draw number of points===
 def draw_points():
-    font = pygame.font.SysFont('arial', 20)
     text = font.render(str(snake.points), True, (255, 255, 255))
     screen.blit(text, [screen_width - 20,  20])
 
+#===Game Loop===
 game_state = 'start_menu'
 game_over = False
 while running:
@@ -139,12 +146,18 @@ while running:
         coliding = snake.isSnakeColidingItself()
         screenColiding = snake.isSnakeColidingScreen(screen_width, screen_height)
 
+        #===If hit wall or self DIE===
+        if screenColiding or coliding:
+            game_state = 'game_over'
+            game_over = True
+            continue
+
         if len(apples) == 0 and snake.points < 5:
             apples.append(generateApple())
         elif snake.points >= 5 and len(apples) == 0:
             apples.append(generateApple())
             apples.append(generateApple())
-            traps.append(generateTrap())
+            traps = [generateTrap()]
         else:
             for trap in traps:
                 trap.draw(screen)
@@ -155,10 +168,8 @@ while running:
                 if apple.removeAppleIfEaten() is not None:
                     apples.remove(apple)
 
-        if screenColiding or coliding:
-            game_state = 'game_over'
-            game_over = True
 
+        #===Snake controls===
         if keys[pygame.K_UP]:
             snake.changeDirection('up')
         if keys[pygame.K_DOWN]:
@@ -179,4 +190,5 @@ while running:
     # independent physics.
     dt = clock.tick(frame_rate) / 1000
 
+#===When alls done quit===
 pygame.quit()

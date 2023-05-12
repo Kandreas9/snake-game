@@ -12,6 +12,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 running = True
 dt = 0
+frame_count = 0
+frame_rate = 60
 
 snake = Snake(screen)
 apple = None
@@ -54,6 +56,32 @@ def draw_game_over_screen():
     screen.blit(title, ((screen_width/4) * 3 - title.get_width()/2, screen_height/2 - title.get_height()/3))
     screen.blit(restart_button, ((screen_width/4) * 3 - restart_button.get_width()/2, screen_height/1.9 + restart_button.get_height()))
     screen.blit(quit_button, ((screen_width/4) * 3 - quit_button.get_width()/2, screen_height/2 + quit_button.get_height()/2))
+
+def draw_timer():
+    global frame_count
+    global frame_rate
+    
+    # Calculate total seconds
+    total_seconds = frame_count // frame_rate
+
+    # Divide by 60 to get total minutes
+    minutes = total_seconds // 60
+ 
+    # Use modulus (remainder) to get seconds
+    seconds = total_seconds % 60
+
+    # Use python string formatting to format in leading zeros
+    output_string = "Time: {0:02}:{1:02}".format(minutes, seconds)
+
+    # Blit to the screen
+    font = pygame.font.SysFont('arial', 20)
+    text = font.render(output_string, True, (255, 255, 255), BLACK)
+    screen.blit(text, [20, 20])
+
+    frame_count += 1
+
+
+
 
 game_state = 'start_menu'
 game_over = False
@@ -113,12 +141,14 @@ while running:
         if keys[pygame.K_LEFT]:
             snake.changeDirection('left')
     
+    draw_timer()
+
     # flip() the display to put your work on screen
     pygame.display.flip()
 
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(frame_rate) / 1000
 
 pygame.quit()

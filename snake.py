@@ -6,6 +6,7 @@ class Snake:
     height = 20
     direction = 'right'
     frames = 10
+    points = 0
 
     # x and y of each snake part
     parts = [[], [], []]
@@ -85,6 +86,7 @@ class Snake:
         self.height = 20
         self.direction = 'right'
         self.frames = 10
+        self.points = 0
 
         # x and y of each snake part
         self.parts = [[], [], []]

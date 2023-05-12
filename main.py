@@ -80,8 +80,10 @@ def draw_timer():
 
     frame_count += 1
 
-
-
+def draw_points():
+    font = pygame.font.SysFont('arial', 20)
+    text = font.render(str(snake.points), True, (255, 255, 255), BLACK)
+    screen.blit(text, [screen_width - 20,  20])
 
 game_state = 'start_menu'
 game_over = False
@@ -141,7 +143,8 @@ while running:
         if keys[pygame.K_LEFT]:
             snake.changeDirection('left')
     
-    draw_timer()
+        draw_timer()
+        draw_points()
 
     # flip() the display to put your work on screen
     pygame.display.flip()

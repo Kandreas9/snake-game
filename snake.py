@@ -9,17 +9,32 @@ class Snake:
     speed = .5
     points = 0
 
-    # x and y of each snake part
+    # x = 0 index and y = 1 index of each snake part
     parts = [[], [], []]
 
     def __init__(self, screen):
         self.reset(screen)
+        self.headRight = pygame.image.load('sprites/head-right.png')
+        self.headLeft = pygame.image.load('sprites/head-left.png')
+        self.headUp = pygame.image.load('sprites/head-up.png')
+        self.headDown = pygame.image.load('sprites/head-down.png')
+        self.bodyIMG = pygame.image.load('sprites/body.png')
 
     def draw(self, screen, moving):
         self.frames -= self.speed
 
         for i, part in enumerate(self.parts):
-            pygame.draw.rect(screen, 'white', pygame.Rect(part[0], part[1], self.width, self.height))
+            if i == (len(self.parts) - 1):
+                if self.direction == 'right':
+                    screen.blit(self.headRight, (part[0], part[1]))
+                elif self.direction == 'left':
+                    screen.blit(self.headLeft, (part[0], part[1]))
+                elif self.direction == 'up':
+                    screen.blit(self.headUp, (part[0], part[1]))
+                elif self.direction == 'down':
+                    screen.blit(self.headDown, (part[0], part[1]))
+            else:
+                 screen.blit(self.bodyIMG, (part[0], part[1]))
 
             if moving and self.frames <= 0:
                 if i == (len(self.parts) - 1):
@@ -28,7 +43,7 @@ class Snake:
                     elif self.direction == 'left':
                         part[0] -= self.width
                     elif self.direction == 'up':
-                     part[1] -= self.height
+                        part[1] -= self.height
                     elif self.direction == 'down':
                         part[1] += self.height
                 else:

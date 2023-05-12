@@ -6,6 +6,7 @@ class Snake:
     height = 20
     direction = 'right'
     frames = 10
+    speed = .5
     points = 0
 
     # x and y of each snake part
@@ -15,12 +16,13 @@ class Snake:
         self.reset(screen)
 
     def draw(self, screen, moving):
-        self.frames -= 1
+        print(self.frames, self.speed)
+        self.frames -= self.speed
 
         for i, part in enumerate(self.parts):
             pygame.draw.rect(screen, 'white', pygame.Rect(part[0], part[1], self.width, self.height))
 
-            if moving and self.frames == 0:
+            if moving and self.frames <= 0:
                 if i == (len(self.parts) - 1):
                     if self.direction == 'right':
                         part[0] += self.width
@@ -34,7 +36,7 @@ class Snake:
                     part[0] = self.parts[i + 1][0]
                     part[1] = self.parts[i + 1][1]
             
-        if self.frames == 0:
+        if self.frames <= 0:
             self.frames = 10
 
     def changeDirection(self, direction):

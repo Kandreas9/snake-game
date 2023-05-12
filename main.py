@@ -2,8 +2,8 @@ import pygame
 import random
 
 from snake import Snake
-from apple import Apple
-from trap import Trap
+from items.apple import Apple
+from items.trap import Trap
 
 #===Pygame Setup===
 pygame.init()
@@ -150,8 +150,9 @@ while running:
         if screenColiding or coliding:
             game_state = 'game_over'
             game_over = True
-            continue
+            break
 
+        #===If no apples, generate and if score more than 5 generate 2
         if len(apples) == 0 and snake.points < 5:
             apples.append(generateApple())
         elif snake.points >= 5 and len(apples) == 0:
@@ -160,11 +161,11 @@ while running:
             traps = [generateTrap()]
         else:
             for trap in traps:
-                trap.draw(screen)
+                trap.item.draw(screen)
                 if trap.removeTrapIfEaten() is not None:
                     traps.remove(trap)
             for apple in apples:
-                apple.draw(screen)
+                apple.item.draw(screen)
                 if apple.removeAppleIfEaten() is not None:
                     apples.remove(apple)
 

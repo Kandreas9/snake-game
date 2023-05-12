@@ -134,6 +134,7 @@ while running:
         if keys[pygame.K_r]:
             game_state = "start_menu"
             snake.reset(screen)
+            frame_count = 0
             apples = []
             traps = []
         if keys[pygame.K_q]:

@@ -127,6 +127,7 @@ while running:
             game_over = False
     elif game_state == "game_over":
         screen.fill("black")
+        draw_points()
         snake.draw(screen, False)
         draw_game_over_screen()
         keys = pygame.key.get_pressed()
@@ -150,7 +151,7 @@ while running:
         if screenColiding or coliding:
             game_state = 'game_over'
             game_over = True
-            break
+            continue
 
         #===If no apples, generate and if score more than 5 generate 2
         if len(apples) == 0 and snake.points < 5:

@@ -3,6 +3,7 @@ import random
 
 from snake import Snake
 from apple import Apple
+from trap import Trap
 
 # pygame setup
 pygame.init()
@@ -17,6 +18,7 @@ frame_rate = 60
 
 snake = Snake(screen)
 apples = []
+traps = []
 
 BLACK = (0, 0, 0)
 
@@ -40,6 +42,19 @@ def generateApple():
             return generateApple()
 
     return Apple(xCoord, yCoord, snake)
+
+def generateTrap():
+    xTiles = int(screen_width / 20)
+    yTiles = int(screen_height / 20)
+    xCoord = random.randrange(xTiles) * 20
+    yCoord = random.randrange(yTiles) * 20
+    
+    for part in snake.parts:
+        if part[0] == xCoord and part[1] == yCoord:
+            return generateTrap()
+
+    return Trap(xCoord, yCoord, snake)
+
 
 def draw_start_menu():
     font = pygame.font.SysFont('arial', 20)
@@ -75,14 +90,14 @@ def draw_timer():
 
     # Blit to the screen
     font = pygame.font.SysFont('arial', 20)
-    text = font.render(output_string, True, (255, 255, 255), BLACK)
+    text = font.render(output_string, True, (255, 255, 255))
     screen.blit(text, [20, 20])
 
     frame_count += 1
 
 def draw_points():
     font = pygame.font.SysFont('arial', 20)
-    text = font.render(str(snake.points), True, (255, 255, 255), BLACK)
+    text = font.render(str(snake.points), True, (255, 255, 255))
     screen.blit(text, [screen_width - 20,  20])
 
 game_state = 'start_menu'
@@ -112,6 +127,7 @@ while running:
             game_state = "start_menu"
             snake.reset(screen)
             apples = []
+            traps = []
         if keys[pygame.K_q]:
             pygame.quit()
             quit()
@@ -128,7 +144,12 @@ while running:
         elif snake.points >= 5 and len(apples) == 0:
             apples.append(generateApple())
             apples.append(generateApple())
+            traps.append(generateTrap())
         else:
+            for trap in traps:
+                trap.draw(screen)
+                if trap.removeTrapIfEaten() is not None:
+                    traps.remove(trap)
             for apple in apples:
                 apple.draw(screen)
                 if apple.removeAppleIfEaten() is not None:

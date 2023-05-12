@@ -16,7 +16,6 @@ class Snake:
         self.reset(screen)
 
     def draw(self, screen, moving):
-        print(self.frames, self.speed)
         self.frames -= self.speed
 
         for i, part in enumerate(self.parts):
@@ -81,6 +80,9 @@ class Snake:
         lastPartPosition = self.parts[0]
 
         self.parts.insert(0, [lastPartPosition[0], lastPartPosition[1]])
+
+    def removeSnakePart(self):
+        self.parts.pop()
 
     def reset(self, screen):
         self.speed = 1

@@ -21,6 +21,6 @@ class Apple:
         if head[0] == self.x and head[1] == self.y:
             self.snake.addSnakePart()
             self.snake.points += 1
-            return None
-        return self
+            return self
+        return None
         

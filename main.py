@@ -16,7 +16,7 @@ frame_count = 0
 frame_rate = 60
 
 snake = Snake(screen)
-apple = None
+apples = []
 
 BLACK = (0, 0, 0)
 
@@ -94,7 +94,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
     keys = pygame.key.get_pressed()
 
     if game_state == "start_menu":
@@ -112,7 +111,7 @@ while running:
         if keys[pygame.K_r]:
             game_state = "start_menu"
             snake.reset(screen)
-            apple = None
+            apples = []
         if keys[pygame.K_q]:
             pygame.quit()
             quit()
@@ -124,11 +123,16 @@ while running:
         coliding = snake.isSnakeColidingItself()
         screenColiding = snake.isSnakeColidingScreen(screen_width, screen_height)
 
-        if apple == None:
-            apple = generateApple()
+        if len(apples) == 0 and snake.points < 5:
+            apples.append(generateApple())
+        elif snake.points >= 5 and len(apples) == 0:
+            apples.append(generateApple())
+            apples.append(generateApple())
         else:
-            apple.draw(screen)
-            apple = apple.removeAppleIfEaten()
+            for apple in apples:
+                apple.draw(screen)
+                if apple.removeAppleIfEaten() is not None:
+                    apples.remove(apple)
 
         if screenColiding or coliding:
             game_state = 'game_over'
